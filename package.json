@@ -4,8 +4,11 @@
   "description": "A library of different data structures, written in TypeScript",
   "main": "build/index.js",
   "scripts": {
-    "test": "jest",
-    "build": "tsc"
+    "build": "tsc",
+    "build:docs": "typedoc --out docs src",
+    "dev": "tsc --incremental --watch",
+    "lint": "eslint ./src",
+    "test": "jest --config jest.config.js"
   },
   "keywords": [
     "Data",
@@ -19,16 +22,22 @@
   "author": "Donald Isaac",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^4.17.15",
+    "fast-copy": "^2.1.0",
+    "reflect-metadata": "^0.1.13",
     "tslib": "^1.11.0"
   },
   "devDependencies": {
     "@types/jest": "^25.2.1",
     "@types/lodash": "^4.14.150",
+    "@typescript-eslint/eslint-plugin": "^3.6.0",
+    "@typescript-eslint/parser": "^3.6.0",
+    "eslint": "^7.4.0",
     "jest": "^25.4.0",
     "jest-expect-message": "^1.0.2",
     "jest-extended": "^0.11.5",
+    "lodash": "^4.17.19",
     "ts-jest": "^25.4.0",
+    "typedoc": "^0.17.8",
     "typescript": "^3.8.3"
   }
 }

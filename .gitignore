@@ -1,6 +1,17 @@
-coverage/
-.vscode/
+# Editor Files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Compiled Code and Dependencies
+build/
 node_modules/
+
+# Test Results
+coverage/
+
+# Ephemeral Files
 *.tmp
 *.log
-*.swp
+.tsbuildinfo

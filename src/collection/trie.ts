@@ -1,4 +1,4 @@
-import { Collection } from './collection';
+import type { Collection } from "./collection";
 
 export enum BufferSize {
     ASCII = 128, // 7 bits
@@ -7,7 +7,7 @@ export enum BufferSize {
 }
 /**
  * A `Trie` is a search tree for storing strings.
- * 
+ *
  * @author Donald Isaac
  * @see https://en.wikipedia.org/wiki/Trie
  */
@@ -15,19 +15,19 @@ export class Trie implements Collection<string> {
     private root: TrieNode;
     /**
      * The buffer size for each node.
-     * 
+     *
      * The buffer size determines what characters can be encoded. A bigger buffer
      * means that a higher variety of characters may be encoded, but the `Trie`
      * will take up significantly more space.
-     * 
+     *
      * ASCII only requires 7 bits to encode, so the buffer size to support
      * ASCII is 128. This is also the default value.
-     */ 
+     */
     private readonly buffSize: number;
 
     /**
      * Creates an empty `Trie`.
-     * 
+     *
      * @param buffSize The size of the alphabet to support. Defaults to `128`,
      *                 the buffer size needed to support ASCII. `buffSize` must
      *                 be strictly positive.
@@ -48,7 +48,7 @@ export class Trie implements Collection<string> {
     }
 
     public insertAll(keys: string[]): this {
-        if (keys == null) throw new Error(`Element list is null or undefined.`);
+        if (keys == null) throw new Error("Element list is null or undefined.");
         for (let key of keys) {
             this.insert(key);
         }
@@ -72,24 +72,24 @@ export class Trie implements Collection<string> {
      * Finds the longest string stored in this Trie that is a prefix of `key`.
      * If there are no prefixes for `key` stored in the Trie, an empty string
      * is returned.
-     * 
+     *
      * @param key the `key` to find the longest prefix of
-     * 
+     *
      * @returns the longest prefix of `key` stored in this Trie, or an empty string.
-     * 
+     *
      * @throws if `key` is null or undefined.
      */
     public longestPrefix(key: string): string {
         if (key == null) throw new Error("Key cannot be null");
         if (key.length === 0) return "";
 
-        let idx: number = 0;
-        let prefix: string = "";
-        let currStr: string = "";
+        let idx = 0;
+        let prefix = "";
+        let currStr = "";
         let curr: TrieNode = this.root;
 
         while (idx < key.length) {
-            let index: number = key.charCodeAt(idx);
+            // let index: number = key.charCodeAt(idx);
             currStr += key.charAt(idx);
             curr = curr.next[idx];
             if (!curr) break;
@@ -107,9 +107,9 @@ export class Trie implements Collection<string> {
     /**
      * Gets all of the stored strings in this `Trie` that start with `prefix`.
      * If the string `prefix` is also in the `Trie`, it is included.
-     * 
+     *
      * @param prefix The `prefix` string to use.
-     * 
+     *
      * @returns An array of strings with `prefix` as their prefix, or an empty
      *          array if no such strings exist.
      */
@@ -128,7 +128,7 @@ export class Trie implements Collection<string> {
     // =========================================================================
 
     private _insert(node: TrieNode, key: string, idx: number): TrieNode {
-        if (key == null || idx > key.length ) {
+        if (key == null || idx > key.length) {
             throw new Error("Key is null or too short.");
         }
         if (node == null) {
@@ -136,7 +136,7 @@ export class Trie implements Collection<string> {
         }
         if (idx === key.length) {
             node.endOfString = true;
-        } else { 
+        } else {
             let index: number = key.charCodeAt(idx);
             node.next[index] = this._insert(node.next[index], key, ++idx);
         }
@@ -152,24 +152,24 @@ export class Trie implements Collection<string> {
     /**
      * Gets the `TrieNode` under a `key`. This node is not guaranteed to be
      * a stored string, i.e. `node.endOfString` is not garunteed to be `true`.
-     * 
+     *
      * @param node The node to start searching at. Also used for recursive calls.
      * @param key The key of the node to get
      * @param idx Index of the key's current character being checked
-     * 
+     *
      * @returns The desired `TrieNode`, or `null` if none exists under `key`.
      */
     private _get(node: TrieNode, key: string, idx: number): TrieNode | null {
         if (key == null || idx > key.length) {
-            throw new Error("key is null or is too short")
-        } 
+            throw new Error("key is null or is too short");
+        }
         // No node means key is not stored
         if (node == null) {
             return null;
-        // Node has been found
+            // Node has been found
         } else if (idx === key.length) {
             return node;
-        // Still have more searching to do
+            // Still have more searching to do
         } else {
             let index: number = key.charCodeAt(idx);
             let next: TrieNode = node.next[index];
@@ -178,9 +178,9 @@ export class Trie implements Collection<string> {
         }
     }
 
-    private _delete(node: TrieNode, key: string, idx: number) {
+    // private _delete(node: TrieNode, key: string, idx: number) {
 
-    }
+    // }
 
     private _keysWithPrefix(node: TrieNode, prefix: string, res: string[]): void {
         if (node == null) return;
@@ -192,7 +192,7 @@ export class Trie implements Collection<string> {
         for (let i = 0; i < node.next.length; ++i) {
             let n: TrieNode = node.next[i];
             // not needed, but merging emtpy arrays over and over again is expensive
-            if (n == null) continue; 
+            if (n == null) continue;
 
             this._keysWithPrefix(n, prefix + String.fromCharCode(i), res);
         }
@@ -209,7 +209,7 @@ class TrieNode {
     endOfString: boolean;
 
     constructor(buffSize: number, endOfString?: boolean) {
-       this.next = new Array<TrieNode>(buffSize); 
-       this.endOfString = endOfString ?? false;
+        this.next = new Array<TrieNode>(buffSize);
+        this.endOfString = endOfString ?? false;
     }
 }
